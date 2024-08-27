@@ -52,7 +52,8 @@ def exemplo_calculadora_somar():
 def exemplo_pedido():
     nome = input("Digite o nome do produto: ")
     quantidade = int(input("Digite a quantidade: "))
-    preco_unitario = float(input("Digite o preço unitário: "))
+    # R$ 2.302.219,10
+    preco_unitario = float(input("Digite o preço unitário: ").replace("R$ ", "").replace(".", "").replace(",", "."))
 
     total = quantidade * preco_unitario
 
