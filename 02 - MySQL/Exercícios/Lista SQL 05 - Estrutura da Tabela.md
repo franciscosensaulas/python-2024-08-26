@@ -36,9 +36,11 @@ Adicione uma nova coluna chamada preco na tabela estoque e defina o valor padrã
 Embora estejamos trabalhando com uma única tabela, vamos simular uma relação simples:
 
 Adicione uma nova coluna chamada categoria_id na tabela estoque.
+
 Crie uma tabela auxiliar chamada categorias com as colunas:
 id (chave primária com numeração automática)
 nome_categoria (do tipo texto)
+
 Estabeleça uma relação onde categoria_id na tabela estoque referencia id na tabela categorias, criando uma chave estrangeira.
 ## 8. Remover a foreign key de uma tabela sem excluir a coluna
 
