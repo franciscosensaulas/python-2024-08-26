@@ -7,6 +7,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema dev_motors
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `dev_motors` ;
 
 -- -----------------------------------------------------
 -- Schema dev_motors
@@ -18,7 +19,7 @@ USE `dev_motors` ;
 -- Table `dev_motors`.`marcas`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`marcas` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(50) NOT NULL,
   `cnpj` CHAR(18) NOT NULL,
   PRIMARY KEY (`id`))
@@ -29,7 +30,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`modelos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`modelos` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `id_marca` INT NOT NULL,
   `nome` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`),
@@ -46,7 +47,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`versoes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`versoes` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `id_modelo` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `motor` VARCHAR(45) NOT NULL,
@@ -64,7 +65,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`cores`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`cores` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -74,7 +75,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`proprietarios`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`proprietarios` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(50) NOT NULL,
   `cpf_cnpj` CHAR(18) NOT NULL,
   `data_nascimento` DATE NOT NULL,
@@ -95,7 +96,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`clientes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`clientes` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(50) NOT NULL,
   `cpf_cnpj` CHAR(18) NOT NULL,
   `data_nascimento` DATE NOT NULL,
@@ -116,7 +117,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`vendas`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`vendas` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `clientes_id` INT NOT NULL,
   `valor` DOUBLE NOT NULL,
   `data` DATE NOT NULL,
@@ -134,7 +135,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`veiculos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`veiculos` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `id_proprietario` INT NOT NULL,
   `id_versao` INT NOT NULL,
   `id_cor` INT NOT NULL,
@@ -180,7 +181,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`opcionais`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`opcionais` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -190,7 +191,7 @@ ENGINE = InnoDB;
 -- Table `dev_motors`.`veiculos_opcionais`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dev_motors`.`veiculos_opcionais` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `id_veiculo` INT NOT NULL,
   `id_opcional` INT NOT NULL,
   PRIMARY KEY (`id`),
