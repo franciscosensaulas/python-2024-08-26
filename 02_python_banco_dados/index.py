@@ -59,8 +59,7 @@ def inserir_marca(): # create
     conexao.close() # Fechar a conexão com o banco de dados
     print("Marca cadastrada com sucesso")
 
-
-def consultar_marcas(): # read
+def obter_todas_marcas():
     conexao = mysql.connector.connect(
         host="127.0.0.1",
         user="root",
@@ -76,6 +75,11 @@ def consultar_marcas(): # read
     registros = cursor.fetchall()
     # fechar a conexão com o banco de dados
     conexao.close()
+    return registros
+
+
+def consultar_marcas(): # read
+    registros = obter_todas_marcas()
 
     table = Table(title="Consulta de Marcas")
 
@@ -96,8 +100,22 @@ def consultar_marcas(): # read
 def atualizar_marca(): # update
     pass
 
-
+# https://dontpad.com/franciscosensaulas/python
 def apagar_marca(): # delete
+    # Consultar todas as marcas
+    marcas = obter_todas_marcas()
+
+    # Criar um vetor com as marcas para o usuário poder escolher a marca que deseja apagar
+    opcoes = []
+    for marca in marcas:
+        opcoes.append(marca[1])
+
+    # perguntando para o usuário qual marca ele deseja apagar
+    marca_apagar = questionary.select(
+        "Escolha a marca para apagar",
+        choices=opcoes,
+    ).ask()
+    
     conexao = mysql.connector.connect(
         host="127.0.0.1", # 127.0.0.1 (localhost) na nossa máquina, na máquina do DEV
         port=3306,
@@ -105,11 +123,14 @@ def apagar_marca(): # delete
         password="admin",
         database="dev_motors"
     )
-
     cursor = conexao.cursor()
-    cursor.execute(f"DELETE FROM marcas")
+    cursor.execute(f"DELETE FROM marcas WHERE nome = '" + marca_apagar + "'")
     conexao.commit() # Efetuar a transação
     conexao.close() # Fechar a conexão com o banco de dados
+
+
+    
+        
 
 
 if __name__ == "__main__":
