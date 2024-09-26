@@ -115,7 +115,7 @@ def apagar_marca(): # delete
         "Escolha a marca para apagar",
         choices=opcoes,
     ).ask()
-    
+    # Abrir a conexão
     conexao = mysql.connector.connect(
         host="127.0.0.1", # 127.0.0.1 (localhost) na nossa máquina, na máquina do DEV
         port=3306,
