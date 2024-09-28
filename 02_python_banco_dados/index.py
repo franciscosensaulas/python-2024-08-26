@@ -1,15 +1,14 @@
-import mysql.connector
 import questionary
 import os
 from rich.console import Console
 from rich.table import Table
+from typing import List
+from modelos import Marca
+# import banco_dados
+from banco_dados import conectar
 
 
-# CRUD
-# Create
-# Read
-# Update
-# Delete
+# https://dontpad.com/franciscosensaulas/python
 
 
 def limpar_tela():
@@ -44,12 +43,8 @@ def inserir_marca(): # create
     nome = questionary.text("Informe o nome da marca: ").ask()
     cnpj = questionary.text("Informe o CNPJ: ").ask()
 
-    conexao = mysql.connector.connect(
-        host="127.0.0.1", # 127.0.0.1 (localhost) na nossa máquina, na máquina do DEV
-        port=3306,
-        user="root",
-        password="admin"
-    )
+    # conexao = banco_dados.conectar()
+    conexao = conectar()
     print("Conectado com sucesso")
 
     cursor = conexao.cursor()
@@ -59,27 +54,36 @@ def inserir_marca(): # create
     conexao.close() # Fechar a conexão com o banco de dados
     print("Marca cadastrada com sucesso")
 
-def obter_todas_marcas():
-    conexao = mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        password="admin",
-        database="dev_motors"
-    )
+def obter_todas_marcas() -> List[Marca]:
+    conexao = conectar()
     print("Conectado com sucesso")
     # criado cursor que nos permitirá executar comandos de SQL 
     cursor = conexao.cursor()
     # definir que será executado uma consulta (SELECT) de todas as marcas 
     cursor.execute("SELECT id, nome, cnpj FROM marcas")
-     # fetchall buscar todos os registros encontrados na consulta
+    # fetchall buscar todos os registros encontrados na consulta
     registros = cursor.fetchall()
     # fechar a conexão com o banco de dados
     conexao.close()
-    return registros
+
+    # criando a lista de marcas
+    marcas : List[Marca] = []
+    # percorrer cada um dos registros que consultamos do banco de dados
+    for registro in registros:
+        # obter os valores das colunas do select
+        id = registro[0]
+        nome = registro[1]
+        cnpj = registro[2]
+        # instanciando um objeto da marca, passando como parâmetro no construtor
+        marca = Marca(id, nome, cnpj)
+        # adicionando a marca na lista de marcas
+        marcas.append(marca)
+    # retornar a lista de marcas
+    return marcas
 
 
 def consultar_marcas(): # read
-    registros = obter_todas_marcas()
+    marcas = obter_todas_marcas()
 
     table = Table(title="Consulta de Marcas")
 
@@ -87,18 +91,35 @@ def consultar_marcas(): # read
     table.add_column("Nome", justify="center", style="magenta")
     table.add_column("CNPJ", justify="center", style="green")
 
-    for registro in registros:
-        codigo = registro[0]
-        nome = registro[1]
-        cnpj = registro[2]
-        table.add_row(str(codigo), nome, cnpj)
+    for marca in marcas:
+        table.add_row(str(marca.id), marca.nome, marca.cnpj)
 
     console = Console()
     console.print(table)
 
 
 def atualizar_marca(): # update
-    pass
+    marcas = obter_todas_marcas()
+
+    opcoes_para_escolher = []
+    for marca in marcas:
+        opcao = questionary.Choice(title=marca.nome, value=marca.id)
+        opcoes_para_escolher.append(opcao)
+    
+    id_marca_escolhida = questionary.select(
+        "Escolha a marca que deseja editar",
+        choices=opcoes_para_escolher
+    ).ask()
+
+    nome_editado = questionary.text("Informe o nome da marca: ").ask()
+    cnpj_editado = questionary.text("Informe o CNPJ: ").ask()
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+    cursor.execute(f"UPDATE marcas SET nome = '{nome_editado}', cnpj = '{cnpj_editado}' WHERE id = {id_marca_escolhida}")
+    conexao.commit()
+    conexao.close()
+    
 
 # https://dontpad.com/franciscosensaulas/python
 def apagar_marca(): # delete
@@ -108,7 +129,7 @@ def apagar_marca(): # delete
     # Criar um vetor com as marcas para o usuário poder escolher a marca que deseja apagar
     opcoes = []
     for marca in marcas:
-        opcoes.append(marca[1])
+        opcoes.append(marca.nome)
 
     # perguntando para o usuário qual marca ele deseja apagar
     marca_apagar = questionary.select(
@@ -116,21 +137,12 @@ def apagar_marca(): # delete
         choices=opcoes,
     ).ask()
     # Abrir a conexão
-    conexao = mysql.connector.connect(
-        host="127.0.0.1", # 127.0.0.1 (localhost) na nossa máquina, na máquina do DEV
-        port=3306,
-        user="root",
-        password="admin",
-        database="dev_motors"
-    )
+    conexao = conectar()
     cursor = conexao.cursor()
     cursor.execute(f"DELETE FROM marcas WHERE nome = '" + marca_apagar + "'")
     conexao.commit() # Efetuar a transação
     conexao.close() # Fechar a conexão com o banco de dados
-
-
-    
-        
+      
 
 
 if __name__ == "__main__":
