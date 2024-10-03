@@ -6,7 +6,7 @@ class Marca:
 
 
 class Modelo:
-    def __init__(self, id: int, id_marca: int, nome: str):
+    def __init__(self, id: int, marca: Marca, nome: str):
         self.id = id
-        self.id_marca = id_marca
+        self.marca = marca
         self.nome = nome

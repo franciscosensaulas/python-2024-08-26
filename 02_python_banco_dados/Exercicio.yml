@@ -1,0 +1,20 @@
+Fazer o crud para a tabela de cores (id, nome).
+
+Utilizar como base o exemplo de marcas.py, marca_repositorio.py e entidades.py
+
+
+Passos:
+1 - Criar a classe Cor em entidades.py
+2 - Criar o arquivo cor_repositorio.py dentro da pasta repositorios
+    - Criar as funções (colocar pass):
+        - cadastrar
+        - apagar
+        - consultar_todas_cores
+        - atualizar
+4 - Adicionar a opção de menu no index.py
+5 - Criar o arquivo cores.py
+    - Criar a função menu_cores
+    - Criar a função inserir_cor
+    - Criar a função consultar_cores
+    - Criar a função editar_cor
+    - Criar a função apagar_cor
