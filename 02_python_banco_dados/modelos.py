@@ -1,4 +1,5 @@
 import questionary
+from perguntar_entidade import escolher_marca
 from repositorios.marca_repositorio import obter_todas_marcas
 from repositorios.modelo_repositorio import apagar, atualizar, cadastrar, obter_todos_modelos
 from rich.console import Console
@@ -41,19 +42,10 @@ def editar_modelo():
     id_modelo_escolhido = questionary.select(
         "Escolha o modelo para alterar", opcoes_para_escolher,
     ).ask()
-    marcas = obter_todas_marcas()
-    if len(marcas) == 0:
-        print("Nenhuma marca cadastrada")
-        return
-    
-    opcoes_marcas_para_escolher = []
-    for marca in marcas:
-        opcao = questionary.Choice(marca.nome, marca.id)
-        opcoes_marcas_para_escolher.append(opcao)
     
     # Perguntar o nome do novo modelo
     nome = questionary.text("Digite o nome do modelo").ask()
-    id_marca = questionary.select("Escolha a marca", opcoes_marcas_para_escolher).ask()
+    id_marca = escolher_marca().id
     # Atualizar o registro na tabela de modelos 
     atualizar(id_modelo_escolhido, id_marca, nome)
 
@@ -98,20 +90,12 @@ def consultar_modelos():
 
 
 def inserir_modelo():
-    marcas = obter_todas_marcas()
-    if len(marcas) == 0:
-        print("Nenhuma marca cadastrada")
+    marca_escolhida = escolher_marca()
+    if marca_escolhida is None:
         return
-    
-    opcoes_marcas_para_escolher = []
-    for marca in marcas:
-        opcao = questionary.Choice(marca.nome, marca.id)
-        opcoes_marcas_para_escolher.append(opcao)
-    
-    id_marca_escolhida = questionary.select("Escolha a marca", opcoes_marcas_para_escolher).ask()
 
     nome = questionary.text("Digite o nome do modelo").ask()
-    cadastrar(id_marca_escolhida, nome)
+    cadastrar(marca_escolhida.id, nome)
     print("Cadastrado com sucesso")
 
 # tela (✔ cadastrar, editar, ✔ apagar, ✔ consultar)

@@ -220,3 +220,12 @@ INSERT INTO marcas (nome, cnpj) VALUES
 ("Volkswagen", "55.794.918/0001-41"),
 ("Ford", "01.486.528/0001-85"),
 ("Fiat", "79.137.542/0001-60");
+
+
+INSERT INTO modelos (id_marca, nome) VALUES
+(1, "F40"),
+(1, "430 Itália"),
+(4, "Mustang"),
+(2, "A3"),
+(2, "TT"),
+(3, "Tiguan");
